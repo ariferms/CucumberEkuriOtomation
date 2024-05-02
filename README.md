@@ -1,1 +1,1 @@
-<img src="path/to/logo.png" alt="Eküri Logo">
+<img src="ekuri.png" alt="Eküri Logo">
