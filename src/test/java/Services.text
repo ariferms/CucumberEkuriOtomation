@@ -1,0 +1,21 @@
+10.0.13.192:8080/api/v1/core/coupon/order - POST
+10.0.13.192:8080/api/v1/core/bulletin/get-bulletin-result - GET
+10.0.13.192:8080/api/v1/core/coupon/get-coupons-filter - GET
+10.0.13.192:8080/api/v1/core/coupon/get-coupons - GET
+10.0.13.192:8080/api/v1/core/bulletin/get-bulletin - GET
+10.0.13.192:8080/api/v1/core/bulletin/get-bulletin-summary - GET
+10.0.13.192:8080/api/v1/core/possibles/get-possibles - GET
+10.0.13.192:8080/api/v1/core/betprogram/get-bet-program - GET
+10.0.13.192:8080/api/v1/core/agf/get-agf- GET
+10.0.13.192:8080/api/v1/core/consent-definition/all - GET
+10.0.13.192:8080/api/v1/core/bulletin/get-hippodrome-list-bulletin - GET
+10.0.13.192:8080/api/v1/core/home/sliders - GET
+10.0.13.192:8080/api/v1/balance/deposit/info - GET
+10.0.13.192:8080/api/v1/balance/withdraw - GET
+10.0.13.192:8080/api/v1/balance/withdraw/request - POST
+10.0.13.192:8080/api/v1/balance/bank-account/{bankId} - DELETE
+10.0.13.192:8080/api/v1/balance/bank-account - POST
+10.0.13.192:8080/api/v1/balance/transaction/get-transactions - GET
+10.0.13.192:8080/api/v1/balance/bank-account - GET
+
+BaseURI:
