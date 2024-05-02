@@ -1,6 +1,6 @@
 package com.ekuri.steps;
 
-import com.ekuri.services.HomePage;
+import com.ekuri.services.HomePageService;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -8,7 +8,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 
 public class HomePageSteps {
-    HomePage homePage = new HomePage();
+    HomePageService homePageService = new HomePageService();
     String hippodromeKey;
     Response consentDefinitionAll,
             homeSliders,
@@ -20,22 +20,22 @@ public class HomePageSteps {
 
     @Given("Ana sayfa icin gerekli degiskenler aliniyor")
     public void parameterInfo() {
-        hippodromeKey = homePage.getHippodromeListBulletin().jsonPath().getString("payload[0].hippodromeKey");
+        hippodromeKey = homePageService.getHippodromeListBulletin().jsonPath().getString("payload[0].hippodromeKey");
     }
 
     @When("Ana sayfa servislerine istek atiliyor")
     public void callHomePage() {
-        consentDefinitionAll = homePage.consentDefinitionAll();
-        homeSliders = homePage.homeSliders();
-        getHippodromeListBulletin = homePage.getHippodromeListBulletin();
+        consentDefinitionAll = homePageService.consentDefinitionAll();
+        homeSliders = homePageService.homeSliders();
+        getHippodromeListBulletin = homePageService.getHippodromeListBulletin();
 
         // Bu adımda sonrasında calisacak servisler icin parametre tanımlanır
-        homePage.paramSpec(hippodromeKey);
+        homePageService.paramSpec(hippodromeKey);
 
-        getAgf = homePage.getAgf();
-        getBulletinSummary = homePage.getBulletinSummary();
-        getPossibles = homePage.getPossibles();
-        getBetProgram = homePage.getBetProgram();
+        getAgf = homePageService.getAgf();
+        getBulletinSummary = homePageService.getBulletinSummary();
+        getPossibles = homePageService.getPossibles();
+        getBetProgram = homePageService.getBetProgram();
     }
     @Then("Servis kontrolleri yapiliyor")
     public void homePageKontrol(){

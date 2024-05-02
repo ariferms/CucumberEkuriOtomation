@@ -4,8 +4,7 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-public class HomePage extends BaseTest {
-
+public class HomePageService extends BaseTest {
     public void paramSpec(String hippodromeKey){
         spec.queryParam("HippodromeKey", hippodromeKey);
     }
