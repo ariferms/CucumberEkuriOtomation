@@ -13,18 +13,18 @@
 
 <style>
 body {
-background-color: #003834; /* Sayfa arka plan rengi */
-color: #ffffff; /* Metin rengi */
+background-color: #003834; 
+color: #ffffff;
 }
 
 .logo-container {
-text-align: center; /* Logo ve metni ortalamak için */
-padding: 20px; /* Logo etrafına boşluk bırakmak için */
+text-align: center; 
+padding: 20px; 
 }
 
 .logo {
-display: inline-block; /* Logo ve metni yan yana yerleştirmek için */
-vertical-align: middle; /* Dikey hizalamayı sağlamak için */
+display: inline-block; 
+vertical-align: middle; 
 }
 </style>
 
