@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
 public class HomePageService extends BaseTest {
+    // Test
     public void paramSpec(String hippodromeKey){
         spec.queryParam("HippodromeKey", hippodromeKey);
     }
