@@ -19,7 +19,7 @@ public class HomePageSteps {
             getBetProgram;
 
     @Given("Ana sayfa icin gerekli degiskenler aliniyor")
-    public void parameterInfo() {
+    public void parameterInfoHippodrom() {
         hippodromeKey = homePageService.getHippodromeListBulletin().jsonPath().getString("payload[0].hippodromeKey");
     }
 

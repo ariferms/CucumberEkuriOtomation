@@ -1,0 +1,48 @@
+package com.ekuri.services;
+
+import io.restassured.response.Response;
+import org.junit.jupiter.api.Test;
+
+import static io.restassured.RestAssured.given;
+
+public class LoginService extends BaseTest {
+
+    public Response token() {
+        Response response = given(spec)
+                .when()
+                .formParam("Input", "14798329878")
+                .formParam("Password", "asd387389")
+                .formParam("client_id", "ekuri_web_client")
+                .formParam("client_secret", "d3f44a6c-3da0-4822-bbc9-8cd41539e6b1")
+                .formParam("grant_type", "multi_provider")
+                .formParam("scope", "offline_access")
+                .header("content-type", "application/x-www-form-urlencoded")
+                .post("auth/connect/token");
+        response
+                .then()
+                .statusCode(200);
+        return response;
+    }
+
+    public Response userMe(String accessToken) {
+        Response response = given(spec)
+                .when()
+                .header("authorization", "Bearer " + accessToken)
+                .get("core/user/me");
+        response
+                .then()
+                .statusCode(200);
+        return response;
+    }
+
+    public Response getWallet(String accessToken) {
+        Response response = given(spec)
+                .when()
+                .header("authorization", "Bearer " + accessToken)
+                .get("balance/wallet/get-wallet");
+        response
+                .then()
+                .statusCode(200);
+        return response;
+    }
+}
