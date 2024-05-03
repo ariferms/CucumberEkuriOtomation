@@ -15,9 +15,9 @@ public class LoginSteps {
             userMe,
             getWallet;
 
-    @Given("Kullanici TCKN ve sifre girisi yapar")
-    public void customerInfo() {
-        token = loginService.token();
+    @Given("Kullanici {} ve {} girisi yapar")
+    public void customerInfo(String input, String password) {
+        token = loginService.token(input, password);
         accessToken = token.jsonPath().getJsonObject("payload.accessToken").toString();
     }
 
@@ -33,6 +33,7 @@ public class LoginSteps {
         if (token.jsonPath().getJsonObject("payload.accessToken") != null) {
             accessKontrol = true;
         }
+
         Assertions.assertTrue(accessKontrol);
         Assertions.assertEquals(token.jsonPath().getJsonObject("processStatus"), "Success");
         Assertions.assertEquals(userMe.jsonPath().getJsonObject("processStatus"), "Success");
