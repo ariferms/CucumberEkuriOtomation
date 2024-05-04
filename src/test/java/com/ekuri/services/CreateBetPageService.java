@@ -1,25 +1,10 @@
 package com.ekuri.services;
 
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import static io.restassured.RestAssured.given;
 
 public class CreateBetPageService extends BaseTest {
-
-    public String  currentDate(){
-        LocalDate localDate = LocalDate.now();
-        System.out.println("Tarih Formatı: " + localDate);
-
-        LocalDateTime localDateTime = LocalDateTime.now();
-        LocalDateTime threeHoursAgo = localDateTime.minusHours(3);
-        LocalDate justDate = threeHoursAgo.toLocalDate();
-        String date = justDate.toString();
-        return date;
-    }
 
     public Response getHippodromeListBetProgram() {
         Response response = given(spec)

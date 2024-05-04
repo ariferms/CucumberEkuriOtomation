@@ -1,9 +1,6 @@
 package com.ekuri.services;
 
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
-import org.junit.runner.Request;
 
 import static io.restassured.RestAssured.*;
 

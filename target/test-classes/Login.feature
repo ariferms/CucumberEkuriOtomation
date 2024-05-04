@@ -1,6 +1,6 @@
 Feature: Kullanici login
 
- Scenario Outline: Kullanici login olmasi servis kontrolleri - <loginOptions>
+ Scenario Outline: Kullanici login servis kontrolleri - <loginOptions>
     Given Kullanici <loginValue> ve <password> girisi yapar
     When Kullanici giris yap butonuna tiklar
     Then Kullanici girisi kotrol edilir

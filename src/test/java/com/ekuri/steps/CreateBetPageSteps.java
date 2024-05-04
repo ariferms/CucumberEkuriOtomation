@@ -1,17 +1,11 @@
 package com.ekuri.steps;
 
 import com.ekuri.services.CreateBetPageService;
-import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 public class CreateBetPageSteps {
     CreateBetPageService createBetPageSevice = new CreateBetPageService();
