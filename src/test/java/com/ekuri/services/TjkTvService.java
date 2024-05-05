@@ -18,12 +18,4 @@ public class TjkTvService extends BaseTest{
                 .statusCode(200);
         return response;
     }
-    public void writeJsonToFile(String json, String filename) throws IOException {
-        // JSON verisini bir dosyaya yazma
-        File file = new File(filename);
-        FileWriter writer = new FileWriter(file);
-        writer.write(json);
-        writer.close();
-        System.out.println("Response JSON yazıldı: " + filename);
-    }
 }

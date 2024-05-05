@@ -17,6 +17,7 @@ public class TjkTvSteps {
     TjkTvService tjkTvService = new TjkTvService();
     Response tjkTv;
     String tjkTvJson;
+    JsonNode rootNode;
 
     @Given("TJK TV'nin yer aldigi menu acilir")
     public void openMenu() {
@@ -32,8 +33,7 @@ public class TjkTvSteps {
 
     @Then("TJK TV servisi kontrol edilir")
     public void tjkTvKontrol() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(new File("src/test/java/com/ekuri/responseJson/tjkTvResponse.json"));
+        rootNode = tjkTvService.readJsonToFile("src/test/java/com/ekuri/responseJson/tjkTvResponse.json");
 
         String tvTitle = rootNode.get("payload").get(0).get("title").asText();
         String YurtDisitvTitle = rootNode.get("payload").get(1).get("title").asText();
