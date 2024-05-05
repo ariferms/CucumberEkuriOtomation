@@ -2,15 +2,11 @@ package com.ekuri.steps;
 
 import com.ekuri.services.TjkTvService;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
 import java.io.IOException;
 
 public class TjkTvSteps {
