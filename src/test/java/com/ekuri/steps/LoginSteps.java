@@ -17,7 +17,7 @@ public class LoginSteps {
 
     @Given("Kullanici {} ve {} girisi yapar")
     public void customerInfo(String input, String password) {
-        token = loginService.token(input, password);
+        token = loginService.login(input, password);
         accessToken = token.jsonPath().getJsonObject("payload.accessToken").toString();
     }
 

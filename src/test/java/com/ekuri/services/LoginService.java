@@ -6,7 +6,7 @@ import static io.restassured.RestAssured.*;
 
 public class LoginService extends BaseTest {
 
-    public Response token(String input, String password) {
+    public Response login(String input, String password) {
         Response response = given(spec)
                 .when()
                 .formParam("Input", input)
