@@ -26,7 +26,7 @@ public class BaseTest {
                 .build();
     }
 
-    public Response token() {
+    public String token() {
         Response response = given(spec)
                 .when()
                 .formParam("Input", "14798329878")
@@ -40,7 +40,7 @@ public class BaseTest {
         response
                 .then()
                 .statusCode(200);
-        return response;
+        return response.jsonPath().getJsonObject("payload.accessToken").toString();
     }
 
     public String  currentDate(){

@@ -18,4 +18,25 @@
 10.0.13.192:8080/api/v1/balance/transaction/get-transactions - GET
 10.0.13.192:8080/api/v1/balance/bank-account - GET
 
-BaseURI:
+BaseURI: https://api.ekuri.com/api/v1/
+
+Yapilacak sayfalar:
+
+- Banka İslemleri
+* Para Cek - OK
+* Para Yatir - OK
+* Hesap Hareketlerim - OK
+* Banka Hesaplarim - OK
+* Hesap Ekle/Sil
+
+- Ayarlar
+* Profil Ayarlari
+* İletisim Ayarlari
+
+* Sifremi Unuttum
+* Register
+
+- Kupon Oynama
+* Rezerve Kupon Oyna/İptal Et
+* Normal Kupon Oyna/İptal Et
+* Kupon Kaydet/Sil

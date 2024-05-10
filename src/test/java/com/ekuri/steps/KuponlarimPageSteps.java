@@ -7,7 +7,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class KuponlarimPageSteps {
 
     @Given("Kuponlarim sayfasi icin gerekli parametreler toplanir")
     public void parameterInfo() {
-        token = kuponlarimPageService.token().jsonPath().getJsonObject("payload.accessToken").toString();
+        token = kuponlarimPageService.token();
     }
 
     @Given("Kullanici kuponlarim sayfasindan {} numarali, {} kupon menusunu secer")
