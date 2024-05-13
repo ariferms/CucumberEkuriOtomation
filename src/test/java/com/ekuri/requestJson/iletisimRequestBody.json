@@ -1,0 +1,6 @@
+{
+  "smsPermission": false,
+  "pushPermission": false,
+  "emailPermission": false,
+  "callPermission": false
+}

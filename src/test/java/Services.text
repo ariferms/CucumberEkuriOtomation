@@ -27,11 +27,11 @@ Yapilacak sayfalar:
 * Para Yatir - OK
 * Hesap Hareketlerim - OK
 * Banka Hesaplarim - OK
-* Hesap Ekle/Sil
+* Hesap Ekle/Sil & Banka Hesaplarimdan eklenen hesap kontrolu - OK
 
 - Ayarlar
-* Profil Ayarlari
-* İletisim Ayarlari
+* Profil Ayarlari - OK (Telefon doğrulamada OTP olduğu için yapılmadı)
+* İletisim Ayarlari -
 
 * Sifremi Unuttum
 * Register

@@ -1,1 +1,1 @@
-io.restassured.internal.RestAssuredResponseImpl@78a8978a
+{"payload":{"id":1814,"name":"Eküri Test","iban":"TR950006284818457499326512","isDefault":false,"bankIconUrl":"https://cdn.ekuri.com/bank-icons/00062.png","bankName":"Türkiye Garanti Bankası A.Ş.","bankCode":"00062"},"processStatus":"Success","friendlyMessage":null,"serverTime":1715556347}
