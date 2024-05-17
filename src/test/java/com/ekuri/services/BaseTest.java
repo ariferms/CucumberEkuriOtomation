@@ -13,12 +13,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
 
 public class BaseTest {
     RequestSpecification spec;
+
     public BaseTest() {
         spec = new RequestSpecBuilder()
                 .setBaseUri("https://api.ekuri.com/api/v1/")
@@ -43,9 +45,16 @@ public class BaseTest {
         return response.jsonPath().getJsonObject("payload.accessToken").toString();
     }
 
-    public String  currentDate(){
+    public String  currentTime() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String formattedTime = localDateTime.format(formatter);
+        System.out.println("Saat Formatı: " + formattedTime);
+        return formattedTime;
+    }
+
+    public String currentDate() {
         LocalDate localDate = LocalDate.now();
-        System.out.println("Tarih Formatı: " + localDate);
 
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDateTime threeHoursAgo = localDateTime.minusHours(3);
