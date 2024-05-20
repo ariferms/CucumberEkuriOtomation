@@ -1,0 +1,15 @@
+{
+  "betType": 1,
+  "cardId": 11,
+  "raceNo": null,
+  "hippodromeKey": null,
+  "multiplier": 1,
+  "legs": [
+    []
+  ],
+  "poolUnit": 100,
+  "price": 1000,
+  "isUsePointFirstly": true,
+  "raceDate": null,
+  "complete": false
+}
