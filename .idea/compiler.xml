@@ -9,8 +9,5 @@
         <module name="CucumberEkuri" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="CucumberEkuri" target="18" />
-    </bytecodeTargetLevel>
   </component>
 </project>

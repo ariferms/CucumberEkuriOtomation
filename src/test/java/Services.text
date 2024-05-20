@@ -40,3 +40,44 @@ Yapilacak sayfalar:
 * Normal Kupon Oyna/İptal Et
 * Rezerve Kupon Oyna/İptal Et
 * Kupon Kaydet/Sil
+
+"BetTypes": {
+ "1": "Ganyan",
+ "2": "Plase",
+ "4": "Ganyan & Plase",
+ "8": "Sıralı İkili Bahis",
+ "9": "Sıralı İkili Bahis (K)",
+ "50": "Sıralı İkili (Virgüllü)",
+ "10": "İkili Bahis",
+ "11": "İkili Bahis (Tek Kolon)",
+ "14": "Çifte Bahis",
+ "15": "3'lü Ganyan",
+ "16": "4'lü Ganyan",
+ "17": "5'li Ganyan",
+ "18": "6'lı Ganyan",
+ "19": "7'li Plase",
+ "47": "Plase İkili",
+ "48": "Plase İkili (Tek Kolon)",
+ "51": "Sıralı Üçlü Bahis",
+ "52": "Sıralı Üçlü Bahis (K)",
+ "53": "Sıralı Üçlü Bahis (Virgüllü)",
+ "54": "Tabela Bahis",
+ "55": "Tabela Bahis (K)",
+ "56": "Tabela Bahis (Virgüllü)",
+ "61": "Sıralı Beşli Bahis",
+ "62": "Sıralı Beşli Bahis (K)",
+ "63": "Sıralı Beşli Bahis (Virgüllü)"
+}
+
+public enum CouponState
+{
+    [Description("Bekliyor")] InProgress = 0,
+    [Description("Kazanan")] Won = 1,
+    [Description("Kaybeden")] Lost = 2,
+    [Description("İptal Edilen")] Canceled = 3,
+    [Description("Kayıtlı")] Draft = 4,
+    [Description("Oynanıyor")] Playing = 5,
+    [Description("Başarısız")] Failed = 6,
+    [Description("Rezerve")] Reserve = 7,
+    [Description("Refund")] Refund = 8
+}
