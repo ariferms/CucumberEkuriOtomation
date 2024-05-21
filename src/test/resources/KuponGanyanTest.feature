@@ -5,3 +5,4 @@ Feature: Ganyan kupon kontrolleri
     When Kupon oynanir
     Then Oynanan Ganyan kuponu kontrol edilir
     And Oynanan kupon iptal edilir
+    And Silinen kupon kontrol edilir

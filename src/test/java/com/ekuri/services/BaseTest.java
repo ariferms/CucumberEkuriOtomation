@@ -9,7 +9,6 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -130,7 +129,7 @@ public class BaseTest {
     }
 
     public String[] getCorrectRaceTimes() throws IOException {
-        String[] result = new String[3];
+        String[] result = new String[4];
         String date = currentDate();
         System.out.println("Date: " + date);
         String racesJson;
@@ -190,6 +189,7 @@ public class BaseTest {
                     shouldBreakOuterLoop = true;
                     runnersJson = racesNode.get(i).get("runners").toString();
                     writeJsonToFile(runnersJson, "src/test/java/com/ekuri/responseJson/runnersResponse.json");
+                    result[3] = response.jsonPath().getString("payload.cardId");
                     break;
                 }
             }
@@ -197,6 +197,7 @@ public class BaseTest {
 
             //System.out.println("Yarış Sayısı: " + racesSize);
             System.out.println("Uygun Yarış saati: " + targetStartTime);
+            System.out.println("CardId: " + result[3]);
             //System.out.println("Koşan Atlar: " + racesNode.get(0).get("runners").get(0).get("horseNo"));
             if (shouldBreakOuterLoop) {
                 break; // Dıştaki döngüyü sonlandır
@@ -213,14 +214,17 @@ public class BaseTest {
         return runnerSize;
     }
 
-    public List avaiableLegList(int runnerSize, JsonNode runnersNode, int misli, int couponUnitPrice) {
-        List<Integer> availableHours = new ArrayList<>();
+    public List avaiableLegList(int runnerSize, JsonNode runnersNode, int misli, int poolUnit) {
+        List<String> availableHours = new ArrayList<>();
         int couponPrice = 0;
+        int say = 0;
         for (int i = 0; i < runnerSize; i++) {
             if (runnersNode.get(i).get("runStatus").asBoolean()) {
-                availableHours.add(runnersNode.get(i).get("horseNo").asInt());
-                couponPrice = misli * (couponPrice + couponUnitPrice);
-                if (couponPrice >= 10) {
+                if (couponPrice < 10) {
+                    say += poolUnit;
+                availableHours.add(runnersNode.get(i).get("horseNo").asText());
+                    couponPrice = misli * say;
+                } else {
                     break;
                 }
             }
@@ -228,8 +232,32 @@ public class BaseTest {
         return availableHours;
     }
 
-    public JsonNode couponRequestUpdate(List<Integer> availableHours, JsonNode couponNode, int misli, int legsIndex, String raceDate, int raceNo, String hippodromeKey) {
+    public int getPrice(int runnerSize, JsonNode runnersNode, int misli, int poolUnit) {
+        List<Integer> availableHours = new ArrayList<>();
+        int couponPrice = 0;
+        int price = 0;
+        int say = 0;
+        for (int i = 0; i < runnerSize; i++) {
+            if (runnersNode.get(i).get("runStatus").asBoolean()) {
+                if (couponPrice < 10) {
+                    say += poolUnit;
+                availableHours.add(runnersNode.get(i).get("horseNo").asInt());
+                couponPrice = misli * say;
+                } else {
+                    break;
+                }
+            }
+            price = couponPrice * 100;
+        }
+        return price;
+    }
+
+    public JsonNode couponRequestUpdate(List<String> availableHours, String betType, JsonNode couponNode, int misli, int legsIndex, String raceDate, int raceNo, String hippodromeKey, int cardId, int poolUnit, int price) throws IOException {
+        int betTypeId;
+        // Json dosyasını oku
         ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> betTypesMap = readBetTypes("src/test/java/com/ekuri/requestJson/betTypes.json");
+        betTypeId = Integer.parseInt(getBetTypeKey(betTypesMap, betType));
         ArrayNode legsArrayNode = objectMapper.valueToTree(availableHours);
         ((ObjectNode) couponNode).withArray("legs").set(legsIndex, legsArrayNode);
 
@@ -237,6 +265,37 @@ public class BaseTest {
         ((ObjectNode) couponNode).put("raceDate", raceDate);
         ((ObjectNode) couponNode).put("raceNo", raceNo);
         ((ObjectNode) couponNode).put("hippodromeKey", hippodromeKey);
+        ((ObjectNode) couponNode).put("betType", betTypeId);
+        ((ObjectNode) couponNode).put("cardId", cardId);
+        ((ObjectNode) couponNode).put("poolUnit", poolUnit);
+        ((ObjectNode) couponNode).put("price", price);
         return couponNode;
     }
+
+    public static Map<String, String> readBetTypes(String filePath) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(new File(filePath));
+
+        Map<String, String> betTypesMap = new HashMap<>();
+        JsonNode betTypesNode = rootNode.get("BetTypes");
+
+        Iterator<Map.Entry<String, JsonNode>> fields = betTypesNode.fields();
+        while (fields.hasNext()) {
+            Map.Entry<String, JsonNode> entry = fields.next();
+            betTypesMap.put(entry.getKey(), entry.getValue().asText());
+        }
+
+        return betTypesMap;
+    }
+
+    // BetType değerine göre anahtar değeri getiren fonksiyon
+    public static String getBetTypeKey(Map<String, String> betTypesMap, String betTypeValue) {
+        for (Map.Entry<String, String> entry : betTypesMap.entrySet()) {
+            if (entry.getValue().equals(betTypeValue)) {
+                return entry.getKey();
+            }
+        }
+        return null; // BetType değeri bulunamazsa null döner
+    }
+
 }
