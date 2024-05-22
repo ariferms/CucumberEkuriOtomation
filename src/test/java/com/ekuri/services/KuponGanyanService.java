@@ -12,6 +12,7 @@ public class KuponGanyanService extends BaseTest {
     Response response = given(spec)
             .when()
             .contentType(ContentType.JSON)
+            .accept("application/json, text/plain, */*")
             .header("authorization", "Bearer " + token)
             .body(couponBody)
             .post("core/coupon/order");
@@ -25,6 +26,7 @@ public class KuponGanyanService extends BaseTest {
         Response response = given(spec)
                 .when()
                 .contentType(ContentType.JSON)
+                .accept("application/json, text/plain, */*")
                 .header("authorization", "Bearer " + token)
                 .body(couponCodeBody)
                 .post("core/coupon/cancel-order");

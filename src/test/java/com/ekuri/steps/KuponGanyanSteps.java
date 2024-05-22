@@ -17,23 +17,20 @@ import java.util.List;
 
 public class KuponGanyanSteps {
     KuponGanyanService kuponGanyanService = new KuponGanyanService();
+    List<String> availableHours = new ArrayList<>();
+    String[] targetRaceInfo = new String[3];
     String token,
             couponBody,
             couponCodeBody,
             couponCode,
             raceDate,
-            correctTime,
             hippodrome,
             targetRaceTime,
-            betType = "Ganyan";
-    String[] targetRaceInfo = new String[3];
+            betType = "Ganyan & Plase";
     JsonNode couponNode,
             runnersNode,
             couponCodeNode;
-    List<String> availableHours = new ArrayList<>();
     int poolUnit = 1,
-            poolUnitFormat,
-            price,
             runnerSize,
             misli = 2,
             raceNo,
@@ -44,12 +41,12 @@ public class KuponGanyanSteps {
     @Given("Ganyan bahis turu icin uygun atlar secilir")
     public void getParameters() throws IOException {
         token = kuponGanyanService.token();
+        kuponGanyanService.getCorrectRaceTimes();
         couponNode = kuponGanyanService.readJsonToFile("src/test/java/com/ekuri/requestJson/ganyanRequest.json");
+        raceDate = kuponGanyanService.currentDate();
         runnersNode = kuponGanyanService.readJsonToFile("src/test/java/com/ekuri/responseJson/runnersResponse.json");
         runnerSize = kuponGanyanService.runnerSize(runnersNode);
-        raceDate = kuponGanyanService.getRaceDate();
-
-        availableHours = kuponGanyanService.avaiableLegList(runnerSize, runnersNode, misli, poolUnit);
+        availableHours = kuponGanyanService.avaiableLegList(runnerSize, runnersNode, misli, betType);
 
         // Oynanacak hipodrom, koşu ve saat bulunur
         targetRaceInfo = kuponGanyanService.getCorrectRaceTimes();
@@ -57,11 +54,9 @@ public class KuponGanyanSteps {
         targetRaceTime = targetRaceInfo[1];
         raceNo = Integer.parseInt(targetRaceInfo[2]);
         cardId = Integer.parseInt(targetRaceInfo[3]);
-        price = kuponGanyanService.getPrice(runnerSize, runnersNode, misli, poolUnit);
-        poolUnitFormat = poolUnit * 100;
 
         // Kupona maclar ve gerekli parametreler eklenir
-        couponNode = kuponGanyanService.couponRequestUpdate(availableHours, betType, couponNode, misli, 0, raceDate, raceNo, hippodrome, cardId, poolUnitFormat, price);
+        couponNode = kuponGanyanService.couponRequestUpdate(availableHours, betType, couponNode, misli, 0, raceDate, raceNo, hippodrome, cardId);
         couponBody = couponNode.toString();
         System.out.println("Yeni Kupon Request: " + couponNode);
     }
@@ -93,7 +88,7 @@ public class KuponGanyanSteps {
 
     @Then("Silinen kupon kontrol edilir")
     public void deleteCouponKotrol() {
-        Assertions.assertEquals(cancelOrder.jsonPath().getInt("payload.id"), couponOrder.jsonPath().getString("payload.id"));
+        Assertions.assertEquals(cancelOrder.jsonPath().getString("payload.id"), couponOrder.jsonPath().getString("payload.id"));
         Assertions.assertEquals(cancelOrder.jsonPath().getInt("payload.cancellationCode"), 2);
     }
 

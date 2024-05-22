@@ -42,31 +42,31 @@ Yapilacak sayfalar:
 * Kupon Kaydet/Sil
 
 "BetTypes": {
- "1": "Ganyan",
- "2": "Plase",
- "4": "Ganyan & Plase",
- "8": "Sıralı İkili Bahis",
- "9": "Sıralı İkili Bahis (K)",
- "50": "Sıralı İkili (Virgüllü)",
- "10": "İkili Bahis",
- "11": "İkili Bahis (Tek Kolon)",
- "14": "Çifte Bahis",
- "15": "3'lü Ganyan",
- "16": "4'lü Ganyan",
- "17": "5'li Ganyan",
- "18": "6'lı Ganyan",
- "19": "7'li Plase",
- "47": "Plase İkili",
- "48": "Plase İkili (Tek Kolon)",
- "51": "Sıralı Üçlü Bahis",
- "52": "Sıralı Üçlü Bahis (K)",
- "53": "Sıralı Üçlü Bahis (Virgüllü)",
- "54": "Tabela Bahis",
- "55": "Tabela Bahis (K)",
- "56": "Tabela Bahis (Virgüllü)",
- "61": "Sıralı Beşli Bahis",
- "62": "Sıralı Beşli Bahis (K)",
- "63": "Sıralı Beşli Bahis (Virgüllü)"
+ "1": "Ganyan", - poolUnit = 1
+ "2": "Plase", - poolUnit = 1
+ "4": "Ganyan & Plase", - poolUnit = 2
+ "8": "Sıralı İkili Bahis", - poolUnit =
+ "9": "Sıralı İkili Bahis (K)", - poolUnit =
+ "50": "Sıralı İkili (Virgüllü)", - poolUnit =
+ "10": "İkili Bahis", - poolUnit =
+ "11": "İkili Bahis (Tek Kolon)", - poolUnit =
+ "14": "Çifte Bahis", - poolUnit =
+ "15": "3'lü Ganyan", - poolUnit =
+ "16": "4'lü Ganyan", - poolUnit =
+ "17": "5'li Ganyan", - poolUnit =
+ "18": "6'lı Ganyan", - poolUnit =
+ "19": "7'li Plase", - poolUnit =
+ "47": "Plase İkili", - poolUnit =
+ "48": "Plase İkili (Tek Kolon)", - poolUnit =
+ "51": "Sıralı Üçlü Bahis", - poolUnit =
+ "52": "Sıralı Üçlü Bahis (K)", - poolUnit =
+ "53": "Sıralı Üçlü Bahis (Virgüllü)", - poolUnit =
+ "54": "Tabela Bahis", - poolUnit =
+ "55": "Tabela Bahis (K)", - poolUnit =
+ "56": "Tabela Bahis (Virgüllü)", - poolUnit =
+ "61": "Sıralı Beşli Bahis", - poolUnit =
+ "62": "Sıralı Beşli Bahis (K)", - poolUnit =
+ "63": "Sıralı Beşli Bahis (Virgüllü)" - poolUnit =
 }
 
 public enum CouponState
