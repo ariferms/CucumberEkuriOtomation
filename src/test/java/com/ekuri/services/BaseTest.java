@@ -10,6 +10,7 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -68,6 +69,20 @@ public class BaseTest {
         return date;
     }
 
+    public String getRaceDate() {
+        LocalDate localDate = LocalDate.now();
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDate justDate = localDateTime.toLocalDate();
+        String date = justDate.toString();
+        return date;
+    }public String getRaceDateReserve() {
+        LocalDate localDate = LocalDate.now();
+        LocalDate nextDate = localDate.plusDays(1);
+        String date = nextDate.toString();
+        return date;
+    }
+
     public void writeJsonToFile(String json, String filePath) throws IOException {
         // JSON verisini bir dosyaya yazma
         File file = new File(filePath);
@@ -83,14 +98,7 @@ public class BaseTest {
         return rootNode;
     }
 
-    public String getRaceDate() {
-        LocalDate localDate = LocalDate.now();
 
-        LocalDateTime localDateTime = LocalDateTime.now();
-        LocalDate justDate = localDateTime.toLocalDate();
-        String date = justDate.toString();
-        return date;
-    }
 
     public List getHippodromeList() throws IOException {
         List<String> hippodromeKeyList = new ArrayList<>();
@@ -118,6 +126,43 @@ public class BaseTest {
                 continue;
             } else {
                 if ((Objects.equals(raceDate, currentDate)) && (payloadNode.get(i).get("currentRaceTime").asText() != null)) {
+                    String hippodromeName = payloadNode.get(i).get("hippodromeKey").asText();
+                    hippodromeKeyList.add(hippodromeName);
+                } else {
+                    continue;
+                }
+            }
+        }
+        System.out.println("Uygun olan Hipodromlar: " + hippodromeKeyList);
+        return hippodromeKeyList;
+    }
+
+    public List getHippodromeListReserve() throws IOException {
+        List<String> hippodromeKeyList = new ArrayList<>();
+        JsonNode hippodromesNode;
+        int paylaodSize;
+        Response response = given(spec)
+                .when()
+                .get("core/betprogram/get-hippodrome-list-bet-program");
+        response
+                .then()
+                .statusCode(200);
+        String body = response.getBody().asString();
+
+        writeJsonToFile(body, "src/test/java/com/ekuri/responseJson/hippodromeListResponse.json");
+        hippodromesNode = readJsonToFile("src/test/java/com/ekuri/responseJson/hippodromeListResponse.json");
+        JsonNode payloadNode = hippodromesNode.get("payload");
+        paylaodSize = payloadNode.size();
+        System.out.println("Payload: " + payloadNode);
+        System.out.println("Payload Size: " + paylaodSize);
+        String RaceDateReserve = getRaceDateReserve();
+
+        for (int i = 0; i < paylaodSize; i++) {
+            String raceDate = payloadNode.get(i).get("raceDate").asText();
+            if (Objects.equals(payloadNode.get(i).get("currentRaceTime").asText(), "")) {
+                continue;
+            } else {
+                if ((Objects.equals(raceDate, RaceDateReserve)) && (payloadNode.get(i).get("currentRaceTime").asText() != null)) {
                     String hippodromeName = payloadNode.get(i).get("hippodromeKey").asText();
                     hippodromeKeyList.add(hippodromeName);
                 } else {
@@ -174,11 +219,11 @@ public class BaseTest {
 
                 // Eğer belirtilen saat bugünkü saatle aynı veya daha önceyse, oynanabilir değil
                 if (minutesUntilRace <= 0) {
-                    System.out.println(hippodromeKey + " Hipodromunun, " + racesNode.get(i).get("raceNo") + " koşusu, koşu saati geçmiş bir saat olarak işaretlendi.");
+                    System.out.println(hippodromeKey + " Hipodromunun, " + racesNode.get(i).get("raceNo") + ". koşusu, koşu saati geçmiş bir saat olarak işaretlendi.");
                 } else if (minutesUntilRace < 30) {
-                    System.out.println(hippodromeKey + " Hipodromunun, " + racesNode.get(i).get("raceNo") + " koşusuna oynamak için yeterli süre yok.");
+                    System.out.println(hippodromeKey + " Hipodromunun, " + racesNode.get(i).get("raceNo") + ". koşusuna oynamak için yeterli süre yok.");
                 } else {
-                    System.out.println(hippodromeKey + " Hipodromunun, " + racesNode.get(i).get("raceNo") + " koşusu oynanabilir durumda.");
+                    System.out.println(hippodromeKey + " Hipodromunun, " + racesNode.get(i).get("raceNo") + ". koşusu oynanabilir durumda.");
                     targetStartTime = racesNode.get(i).get("startTime").asText();
                     System.out.println("Uygun Yarış No: " + racesNode.get(i).get("raceNo"));
                     result[2] = racesNode.get(i).get("raceNo").toString();
@@ -188,6 +233,84 @@ public class BaseTest {
                     runnersJson = racesNode.get(i).get("runners").toString();
                     writeJsonToFile(runnersJson, "src/test/java/com/ekuri/responseJson/runnersResponse.json");
                     result[3] = response.jsonPath().getString("payload.cardId");
+                    break;
+                }
+            }
+
+
+            //System.out.println("Yarış Sayısı: " + racesSize);
+            System.out.println("Uygun Yarış saati: " + targetStartTime);
+            System.out.println("CardId: " + result[3]);
+            //System.out.println("Koşan Atlar: " + racesNode.get(0).get("runners").get(0).get("horseNo"));
+            if (shouldBreakOuterLoop) {
+                break; // Dıştaki döngüyü sonlandır
+            }
+        }
+        result[1] = targetStartTime;
+
+        return result;
+    }
+
+
+        public String[] getCorrectReserveRaceTimes() throws IOException {
+        String[] result = new String[4];
+        String date = getRaceDateReserve();
+        System.out.println("Date: " + date);
+        String racesJson;
+        String runnersJson;
+        String startTime;
+        String targetStartTime = null;
+        JsonNode racesNode;
+        List<Map<String, Object>> racesList;
+        List<String> hippodromeListReserve = getHippodromeListReserve();
+        //String hippodromeKey = "ROGERSDOWN";
+        LocalTime currentTime;
+        long minutesUntilRace;
+        int racesSize;
+        boolean shouldBreakOuterLoop = false;
+
+        for (String hippodromeKey : hippodromeListReserve) {
+            // Servise istek atilir
+            Response response = given(spec)
+                    .when()
+                    .get("core/betprogram/get-bet-program?HippodromeKey=" + hippodromeKey + "&Date=" + date);
+            response
+                    .then()
+                    .statusCode(200);
+            racesList = response.jsonPath().getList("payload.races");
+
+            ObjectMapper mapper = new ObjectMapper();
+            racesJson = mapper.writeValueAsString(racesList);
+
+            writeJsonToFile(racesJson, "src/test/java/com/ekuri/responseJson/racesToHippodromeResponse.json");
+            racesNode = readJsonToFile("src/test/java/com/ekuri/responseJson/racesToHippodromeResponse.json");
+            racesSize = racesNode.size();
+
+            // Belirtilen saat ile şu anki saat arasındaki farkı hesapla
+            currentTime = LocalTime.now();
+
+            for (int i = 0; i < racesSize; i++) {
+                startTime = racesNode.get(i).get("startTime").asText();
+                LocalTime raceTime = LocalTime.parse(startTime); // Örnek olarak 10:16 saatini kullanıyoruz
+
+                minutesUntilRace = Duration.between(currentTime, raceTime).toMinutes();
+
+                // Eğer belirtilen saat bugünkü saatle aynı veya daha önceyse, oynanabilir değil
+                if (minutesUntilRace <= 0) {
+                    System.out.println(hippodromeKey + " Hipodromunun, " + racesNode.get(i).get("raceNo") + ". koşusu, koşu saati geçmiş bir saat olarak işaretlendi.");
+                } else if (minutesUntilRace < 30) {
+                    System.out.println(hippodromeKey + " Hipodromunun, " + racesNode.get(i).get("raceNo") + ". koşusuna oynamak için yeterli süre yok.");
+                } else {
+                    System.out.println(hippodromeKey + " Hipodromunun, " + racesNode.get(i).get("raceNo") + ". koşusu oynanabilir durumda.");
+                    targetStartTime = racesNode.get(i).get("startTime").asText();
+                    System.out.println("Uygun Yarış No: " + racesNode.get(i).get("raceNo"));
+                    result[2] = racesNode.get(i).get("raceNo").toString();
+                    System.out.println("Uygun Koşunun Bulunduğu Hippodrome: " + hippodromeKey);
+                    result[0] = hippodromeKey;
+                    shouldBreakOuterLoop = true;
+                    runnersJson = racesNode.get(i).get("runners").toString();
+                    writeJsonToFile(runnersJson, "src/test/java/com/ekuri/responseJson/runnersResponse.json");
+                    result[3] = "0";
                     break;
                 }
             }
@@ -256,7 +379,7 @@ public class BaseTest {
         return price;
     }
 
-    public JsonNode couponRequestUpdate(List<String> availableHours, String betType, JsonNode couponNode, int misli, int legsIndex, String raceDate, int raceNo, String hippodromeKey, int cardId) throws IOException {
+    public JsonNode couponRequestUpdate(List<String> availableHours, String betType, JsonNode couponNode, int misli, int legsIndex, String raceDate, int raceNo, String hippodromeKey, int cardId, boolean complete) throws IOException {
         int betTypeId,
                 poolUnit,
                 price,
@@ -297,9 +420,11 @@ public class BaseTest {
         ((ObjectNode) couponNode).put("cardId", cardId);
         ((ObjectNode) couponNode).put("poolUnit", poolUnitFormat);
         ((ObjectNode) couponNode).put("price", price);
+        ((ObjectNode) couponNode).put("complete", complete);
         return couponNode;
     }
 
+    // BetTypes json dosyasını okuyup Map'ler
     public static Map<String, String> readBetTypes(String filePath) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(new File(filePath));
@@ -326,7 +451,8 @@ public class BaseTest {
         return null; // BetType değeri bulunamazsa null döner
     }
 
-    public BetTypeInfo getBetType(String betType){
+    // BetType'a göre anahtar değerini döner
+    public BetTypeInfo getBetType(String betType) {
         int betTypeId,
                 poolUnit;
         switch (betType) {
@@ -340,7 +466,7 @@ public class BaseTest {
                 break;
             case "Ganyan & Plase":
                 betTypeId = 4;
-                poolUnit = 2;
+                poolUnit = 1;
                 break;
             case "Sıralı İkili Bahis":
                 betTypeId = 8;
@@ -434,7 +560,7 @@ public class BaseTest {
                 throw new IllegalArgumentException("Invalid bet type: " + betType);
         }
 
-        return new BetTypeInfo(betTypeId,poolUnit);
+        return new BetTypeInfo(betTypeId, poolUnit);
     }
 
 

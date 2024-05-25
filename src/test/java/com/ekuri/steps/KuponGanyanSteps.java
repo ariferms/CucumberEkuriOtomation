@@ -26,37 +26,37 @@ public class KuponGanyanSteps {
             raceDate,
             hippodrome,
             targetRaceTime,
-            betType = "Ganyan & Plase";
+            betType = "Ganyan";
     JsonNode couponNode,
             runnersNode,
-            couponCodeNode;
-    int poolUnit = 1,
-            runnerSize,
+            couponCodeNode,
+            couponNodeJson;
+    int runnerSize,
             misli = 2,
             raceNo,
             cardId;
+    boolean complete = false;
     Response couponOrder,
             cancelOrder;
 
     @Given("Ganyan bahis turu icin uygun atlar secilir")
     public void getParameters() throws IOException {
         token = kuponGanyanService.token();
-        kuponGanyanService.getCorrectRaceTimes();
-        couponNode = kuponGanyanService.readJsonToFile("src/test/java/com/ekuri/requestJson/ganyanRequest.json");
-        raceDate = kuponGanyanService.currentDate();
+        targetRaceInfo = kuponGanyanService.getCorrectRaceTimes();
+        couponNodeJson = kuponGanyanService.readJsonToFile("src/test/java/com/ekuri/requestJson/ganyanRequest.json");
+        raceDate = kuponGanyanService.getRaceDate();
         runnersNode = kuponGanyanService.readJsonToFile("src/test/java/com/ekuri/responseJson/runnersResponse.json");
         runnerSize = kuponGanyanService.runnerSize(runnersNode);
         availableHours = kuponGanyanService.avaiableLegList(runnerSize, runnersNode, misli, betType);
 
         // Oynanacak hipodrom, koşu ve saat bulunur
-        targetRaceInfo = kuponGanyanService.getCorrectRaceTimes();
         hippodrome = targetRaceInfo[0];
         targetRaceTime = targetRaceInfo[1];
         raceNo = Integer.parseInt(targetRaceInfo[2]);
         cardId = Integer.parseInt(targetRaceInfo[3]);
 
         // Kupona maclar ve gerekli parametreler eklenir
-        couponNode = kuponGanyanService.couponRequestUpdate(availableHours, betType, couponNode, misli, 0, raceDate, raceNo, hippodrome, cardId);
+        couponNode = kuponGanyanService.couponRequestUpdate(availableHours, betType, couponNodeJson, misli, 0, raceDate, raceNo, hippodrome, cardId, complete);
         couponBody = couponNode.toString();
         System.out.println("Yeni Kupon Request: " + couponNode);
     }

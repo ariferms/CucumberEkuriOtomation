@@ -37,8 +37,8 @@ Yapilacak sayfalar:
 * Register
 
 - Kupon Oynama
-* Normal Kupon Oyna/İptal Et
-* Rezerve Kupon Oyna/İptal Et
+* Normal Kupon Oyna/İptal Et - Alt yapı Ok. Tüm bahis türleri henüz olmasa da Ganyan ve Plase Ok
+* Rezerve Kupon Oyna/İptal Et - Alt yapı Ok. Tüm bahis türleri henüz olmasa da Ganyan ve Plase Ok
 * Kupon Kaydet/Sil
 
 "BetTypes": {
