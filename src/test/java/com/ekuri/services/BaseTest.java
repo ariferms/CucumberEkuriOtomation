@@ -425,7 +425,7 @@ public class BaseTest {
     }
 
     // BetTypes json dosyasını okuyup Map'ler
-    public static Map<String, String> readBetTypes(String filePath) throws IOException {
+    /*public static Map<String, String> readBetTypes(String filePath) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(new File(filePath));
 
@@ -439,7 +439,7 @@ public class BaseTest {
         }
 
         return betTypesMap;
-    }
+    }*/
 
     // BetType değerine göre anahtar değeri getiren fonksiyon
     public static String getBetTypeKey(Map<String, String> betTypesMap, String betTypeValue) {
