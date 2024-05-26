@@ -423,6 +423,51 @@ public class BaseTest {
         ((ObjectNode) couponNode).put("complete", complete);
         return couponNode;
     }
+    public JsonNode couponSavingRequestUpdate(List<String> availableHours, String betType, JsonNode couponNode, int misli, int legsIndex, String raceDate, int raceNo, String hippodromeKey, int cardId, boolean complete, String name) throws IOException {
+        int betTypeId,
+                poolUnit,
+                price,
+                poolUnitFormat,
+                runnerSize;
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode runnersNode;
+
+        /*// Json dosyasını oku
+        Map<String, String> betTypesMap = readBetTypes("src/test/java/com/ekuri/requestJson/betTypes.json");
+        betTypeId = Integer.parseInt(getBetTypeKey(betTypesMap, betType));*/
+
+        runnersNode = readJsonToFile("src/test/java/com/ekuri/responseJson/runnersResponse.json");
+        runnerSize = runnerSize(runnersNode);
+
+        // BetType bilgileri alinir
+        BetTypeInfo betTypeInfo;
+
+        betTypeInfo = getBetType(betType);
+        poolUnit = betTypeInfo.getPoolUnit();
+        betTypeId = betTypeInfo.getBetTypeId();
+
+        // Price hesaplanir
+        price = getPrice(runnerSize, runnersNode, misli, poolUnit);
+
+        // poolUnit degeri fromatlanir
+        poolUnitFormat = poolUnit * 100;
+
+        // coupon body olusturulur
+        ArrayNode legsArrayNode = objectMapper.valueToTree(availableHours);
+        ((ObjectNode) couponNode).withArray("legs").set(legsIndex, legsArrayNode);
+
+        ((ObjectNode) couponNode).put("multiplier", misli);
+        ((ObjectNode) couponNode).put("raceDate", raceDate);
+        ((ObjectNode) couponNode).put("raceNo", raceNo);
+        ((ObjectNode) couponNode).put("hippodromeKey", hippodromeKey);
+        ((ObjectNode) couponNode).put("betType", betTypeId);
+        ((ObjectNode) couponNode).put("cardId", cardId);
+        ((ObjectNode) couponNode).put("poolUnit", poolUnitFormat);
+        ((ObjectNode) couponNode).put("price", price);
+        ((ObjectNode) couponNode).put("complete", complete);
+        ((ObjectNode) couponNode).put("name", name);
+        return couponNode;
+    }
 
     // BetTypes json dosyasını okuyup Map'ler
     /*public static Map<String, String> readBetTypes(String filePath) throws IOException {

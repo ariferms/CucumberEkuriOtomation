@@ -39,7 +39,7 @@ Yapilacak sayfalar:
 - Kupon Oynama
 * Normal Kupon Oyna/İptal Et - Alt yapı Ok. Tüm bahis türleri henüz olmasa da Ganyan ve Plase Ok
 * Rezerve Kupon Oyna/İptal Et - Alt yapı Ok. Tüm bahis türleri henüz olmasa da Ganyan ve Plase Ok
-* Kupon Kaydet/Sil
+* Kupon Kaydet/Sil - Alt yapı Ok. Tüm bahis türleri henüz olmasa da Ganyan ve Plase Ok
 
 "BetTypes": {
  "1": "Ganyan", - poolUnit = 1

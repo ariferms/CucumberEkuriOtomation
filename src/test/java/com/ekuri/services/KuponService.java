@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-public class KuponGanyanService extends BaseTest {
+public class KuponService extends BaseTest {
 
     public Response couponOrder(String token, String couponBody) {
     Response response = given(spec)

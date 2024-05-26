@@ -1,6 +1,6 @@
 package com.ekuri.steps;
 
-import com.ekuri.services.KuponGanyanService;
+import com.ekuri.services.KuponService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KuponGanyanSteps {
-    KuponGanyanService kuponGanyanService = new KuponGanyanService();
+public class KuponSteps {
+    KuponService kuponService = new KuponService();
     List<String> availableHours = new ArrayList<>();
     String[] targetRaceInfo = new String[3];
     String token,
@@ -26,7 +26,7 @@ public class KuponGanyanSteps {
             raceDate,
             hippodrome,
             targetRaceTime,
-            betType = "Ganyan";
+            betType;
     JsonNode couponNode,
             runnersNode,
             couponCodeNode,
@@ -35,19 +35,21 @@ public class KuponGanyanSteps {
             misli = 2,
             raceNo,
             cardId;
-    boolean complete = false;
+    boolean complete;
     Response couponOrder,
             cancelOrder;
 
-    @Given("Ganyan bahis turu icin uygun atlar secilir")
-    public void getParameters() throws IOException {
-        token = kuponGanyanService.token();
-        targetRaceInfo = kuponGanyanService.getCorrectRaceTimes();
-        couponNodeJson = kuponGanyanService.readJsonToFile("src/test/java/com/ekuri/requestJson/ganyanRequest.json");
-        raceDate = kuponGanyanService.getRaceDate();
-        runnersNode = kuponGanyanService.readJsonToFile("src/test/java/com/ekuri/responseJson/runnersResponse.json");
-        runnerSize = kuponGanyanService.runnerSize(runnersNode);
-        availableHours = kuponGanyanService.avaiableLegList(runnerSize, runnersNode, misli, betType);
+    @Given("{} bahis turu icin uygun {} turu ve atlar secilir")
+    public void getParameters(String betTypeValue, boolean completeValue) throws IOException {
+        betType = betTypeValue;
+        complete = completeValue;
+        token = kuponService.token();
+        targetRaceInfo = kuponService.getCorrectRaceTimes();
+        couponNodeJson = kuponService.readJsonToFile("src/test/java/com/ekuri/requestJson/kuponRequest.json");
+        raceDate = kuponService.getRaceDate();
+        runnersNode = kuponService.readJsonToFile("src/test/java/com/ekuri/responseJson/runnersResponse.json");
+        runnerSize = kuponService.runnerSize(runnersNode);
+        availableHours = kuponService.avaiableLegList(runnerSize, runnersNode, misli, betType);
 
         // Oynanacak hipodrom, koşu ve saat bulunur
         hippodrome = targetRaceInfo[0];
@@ -56,7 +58,7 @@ public class KuponGanyanSteps {
         cardId = Integer.parseInt(targetRaceInfo[3]);
 
         // Kupona maclar ve gerekli parametreler eklenir
-        couponNode = kuponGanyanService.couponRequestUpdate(availableHours, betType, couponNodeJson, misli, 0, raceDate, raceNo, hippodrome, cardId, complete);
+        couponNode = kuponService.couponRequestUpdate(availableHours, betType, couponNodeJson, misli, 0, raceDate, raceNo, hippodrome, cardId, complete);
         couponBody = couponNode.toString();
         System.out.println("Yeni Kupon Request: " + couponNode);
     }
@@ -64,7 +66,7 @@ public class KuponGanyanSteps {
     @When("Kupon oynanir")
     public void requestGanyanCoupon() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        couponOrder = kuponGanyanService.couponOrder(token, couponBody);
+        couponOrder = kuponService.couponOrder(token, couponBody);
         File couponCodeFile = new File("src/test/java/com/ekuri/requestJson/couponCodeBody.json");
         couponCodeNode = objectMapper.readTree(couponCodeFile);
 
@@ -73,7 +75,7 @@ public class KuponGanyanSteps {
         couponCodeBody = couponCodeNode.toString();
     }
 
-    @Then("Oynanan Ganyan kuponu kontrol edilir")
+    @Then("Oynanan kuponu kontrol edilir")
     public void couponKontrol() {
         Assertions.assertEquals(couponOrder.jsonPath().getJsonObject("processStatus"), "Success");
         Assertions.assertEquals(couponOrder.jsonPath().getString("payload.couponCode"), couponCode);
@@ -83,7 +85,7 @@ public class KuponGanyanSteps {
 
     @Then("Oynanan kupon iptal edilir")
     public void deleteCoupon() {
-        cancelOrder = kuponGanyanService.cancelOrder(token, couponCodeBody);
+        cancelOrder = kuponService.cancelOrder(token, couponCodeBody);
     }
 
     @Then("Silinen kupon kontrol edilir")

@@ -1,8 +1,13 @@
-Feature: Ganyan kupon kontrolleri
+Feature: Kupon kontrolleri
 
-  Scenario: Ganyan kupon turunde kupon oynanilir
-    Given Ganyan bahis turu icin uygun atlar secilir
+  Scenario Outline: <kuponType> kupon turunde kupon oynanilir
+    Given <kuponType> bahis turu icin uygun <complete> turu ve atlar secilir
     When Kupon oynanir
-    Then Oynanan Ganyan kuponu kontrol edilir
+    Then Oynanan kuponu kontrol edilir
     And Oynanan kupon iptal edilir
     And Silinen kupon kontrol edilir
+
+    Examples:
+      | kuponType | complete |
+      | Ganyan    | false    |
+      | Plase     | false    |
