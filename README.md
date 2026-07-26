@@ -9,6 +9,17 @@
 
 ---
 
+## 📑 İçindekiler
+
+- [📋 Proje Hakkında](#-proje-hakkında)
+- [🛠️ Kullanılan Teknolojiler](#️-kullanılan-teknolojiler)
+- [🗂️ Proje Haritası (Klasör Yapısı)](#️-proje-haritası-klasör-yapısı)
+- [⚙️ Kurulum ve Çalıştırma](#️-kurulum-ve-çalıştırma)
+- [🧪 Test Yaklaşımı](#-test-yaklaşımı)
+- [👤 Geliştirici](#-geliştirici)
+
+---
+
 ## 📋 Proje Hakkında
 
 Bu proje, **[ekuri.com](https://ekuri.com)** platformunun API servislerini test etmek amacıyla geliştirilmiş bir **davranış odaklı test otomasyonu (BDD)** projesidir. Testler, iş gereksinimlerinin sade ve okunabilir bir dille (Gherkin) senaryolar halinde yazılmasına imkan tanıyan **Cucumber** framework'ü kullanılarak tasarlanmıştır.
@@ -91,7 +102,7 @@ Testler çalıştırıldıktan sonra sonuçlar `target/` klasörü altında (Cuc
 
 ## 👤 Geliştirici
 
-**Arif ERMİŞ** — [ariferms](https://github.com/ariferms)
+**Arif** — [ariferms](https://github.com/ariferms)
 
 ---
 
