@@ -102,7 +102,7 @@ Testler çalıştırıldıktan sonra sonuçlar `target/` klasörü altında (Cuc
 
 ## 👤 Geliştirici
 
-**Arif** — [ariferms](https://github.com/ariferms)
+**Arif ERMİŞ** — [ariferms](https://github.com/ariferms)
 
 ---
 
